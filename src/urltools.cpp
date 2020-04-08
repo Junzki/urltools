@@ -26,11 +26,18 @@ to_hex(char code) {
     return alphabet[code & 0x0F];
 }
 
+char
+from_hex(char h) {
+    if (isdigit(h)) {
+        return h - '0';
+    }
+
+    return tolower(h) - 'a' + 0x0A;
+}
+
 
 string
-stun::urlencode(const string& in)
-{
-    
+stun::urlencode(const string& in) {
     const char* body = in.c_str();
     size_t size = strlen(body);
     if (0 == size)
@@ -58,3 +65,35 @@ stun::urlencode(const string& in)
     return string(buf);
 }
 
+
+string
+stun::urldecode(const string& in) {
+    const char* body = in.c_str();
+    size_t size = strlen(body);
+
+    if (0 == size)
+        return "";
+
+    char* buf = (char*)malloc(size + 1);
+    if (nullptr == buf)
+        throw("cannot allocate memory");
+
+    memset(buf, '\0', size + 1);
+    char* ptr = buf;
+
+    int i = 0;
+    while (i < size) {
+        char v = body[i++];
+        if ('%' != v) {
+            *(ptr++) = v;
+            continue;
+        }
+
+        char h = from_hex(body[i++]);
+        char b = from_hex(body[i++]);
+
+        *(ptr++) = (h << 4) + b;
+    }
+
+    return string(buf);
+}
