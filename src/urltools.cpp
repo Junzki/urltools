@@ -1,16 +1,11 @@
 ﻿// urltools.cpp : Defines the entry point for the application.
 //
 
-#include <sstream>
-#include <algorithm>
 #include <cstring>
 #include <cstdlib>
 #include "urltools.h"
 
-using std::uint8_t;
 using std::string;
-
-const uint8_t block_size = 4;
 
 inline bool
 encode_required(char c) {
