@@ -11,26 +11,31 @@
 using std::string;
 
 namespace stun {
+
+    template<typename T>
+    T parse(const string& in)
+    {
+        return T::parse(in);
+    };
+
     class user_info {
     public:
         user_info(string user, string password = "")
-                : _user_name(std::move(user)), _password(std::move(password))
-        {
-            if (!password.empty())
-                this->_password_set = false;
-        }
+                : user_name_(std::move(user)), password_(std::move(password)) {}
 
-        user_info parse(const string& i);
+        user_info() = default;
 
-        inline string user_name() { return this->_user_name; }
-        inline string password() { return this->_password; }
+        static user_info parse(const string&);
+
+        inline string user_name() const { return this->user_name_; }
+        inline string password() const { return this->password_; }
+        inline bool password_set() const { return ! this->password_.empty(); }
 
         string to_string();
 
     private:
-        string _user_name;
-        string _password;
-        bool _password_set = false;
+        string user_name_;
+        string password_;
     };
 
     class url {

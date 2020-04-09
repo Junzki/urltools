@@ -10,6 +10,9 @@ set(TEST_LIBRARIES Catch2::Catch2 ${PROJECT_NAME})
 add_executable(urlcode_test "urlcode.cpp")
 target_link_libraries(urlcode_test ${TEST_LIBRARIES})
 
+add_executable(user_info_test "user_info.cpp")
+target_link_libraries(user_info_test ${TEST_LIBRARIES})
+
 
 include(Catch)
-catch_discover_tests(urlcode_test)
+catch_discover_tests(urlcode_test user_info_test)
