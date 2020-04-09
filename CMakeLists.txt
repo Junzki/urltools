@@ -13,6 +13,11 @@ add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_FILES})
 SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES PREFIX "lib")
 
-# Add source to this project's executable.
-add_executable(urltools_test "test.cpp")
-target_link_libraries(urltools_test ${PROJECT_NAME})
+# Add tests
+if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+    include(CTest)
+
+    if (${BUILD_TESTING})
+        add_subdirectory(tests)
+    endif()
+endif()

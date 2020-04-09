@@ -51,4 +51,5 @@ CMakeSettings.json
 .idea/
 out/
 cmake-build-debug/
+cmake-build-release/
 [Bb]uild/

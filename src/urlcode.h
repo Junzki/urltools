@@ -3,8 +3,8 @@
 
 #pragma once
 
-#ifndef STUN_URLTOOLS_H_
-#define STUN_URLTOOLS_H_
+#ifndef STUN_URLCODE_H_
+#define STUN_URLCODE_H_
 
 #include <iostream>
 
@@ -16,4 +16,4 @@ namespace stun {
     string urldecode(const string&);
 }
 
-#endif // !STUN_URLTOOLS_H_
+#endif // !STUN_URLCODE_H_
