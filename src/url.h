@@ -38,12 +38,12 @@ namespace stun {
         string password_;
     };
 
-    class url {
+    class url_t {
     public:
-        url() = default;
+        url_t() = default;
 
-        url parse(const string& i);
-        string to_string();
+        url_t parse(const string& i);
+        string to_string() const;
 
         string scheme;
         user_info* user = nullptr;
@@ -55,6 +55,8 @@ namespace stun {
         string raw_query;
         string fragment;
     };
+
+    string get_scheme(char**);
 }
 
 

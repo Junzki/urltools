@@ -1,4 +1,4 @@
-// urlcode_test.c -- Tests for urlencode / urldecode
+// urlcode.c -- Tests for urlencode / urldecode
 //
 
 #include <string>

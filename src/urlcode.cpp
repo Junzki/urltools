@@ -57,7 +57,10 @@ stun::urlencode(const string& in) {
         *(ptr++) = to_hex(v & 0x0F);
     }
 
-    return string(buf);
+    auto ret = string(buf);
+    free(buf);
+
+    return ret;
 }
 
 
@@ -90,5 +93,8 @@ stun::urldecode(const string& in) {
         *(ptr++) = (h << 4) + b;
     }
 
-    return string(buf);
+    auto ret = string(buf);
+    free(buf);
+
+    return ret;
 }
