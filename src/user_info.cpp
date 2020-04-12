@@ -6,7 +6,6 @@
 #include "url.h"
 #include "urlcode.h"
 
-using std::istringstream;
 using stun::user_info;
 
 
@@ -25,4 +24,23 @@ user_info::parse(const string& in) {
     const auto password = urldecode(in.substr(found + 1));
 
     return user_info(name, password);
+}
+
+
+string
+user_info::to_string() const
+{
+    std::stringstream ss;
+    const auto user = urlencode(this->user_name_);
+    ss << user;
+
+    if (! this->password_set())
+    {
+        return ss.str();
+    }
+
+    const auto password = urlencode(this->password_);
+    ss << ":" << password;
+
+    return ss.str();
 }

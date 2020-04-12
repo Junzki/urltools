@@ -31,7 +31,7 @@ namespace stun {
         inline string password() const { return this->password_; }
         inline bool password_set() const { return ! this->password_.empty(); }
 
-        string to_string();
+        string to_string() const;
 
     private:
         string user_name_;

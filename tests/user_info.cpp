@@ -25,7 +25,7 @@ TEST_CASE( "Parse user_name & password", "[user_info::parse]" )
     }
 
 
-    SECTION("Parse user_name with password")
+    SECTION( "Parse user_name with password" )
     {
         const auto user_name_with_password = "user_name:password";
         auto info = user_info::parse(user_name_with_password);
@@ -34,7 +34,7 @@ TEST_CASE( "Parse user_name & password", "[user_info::parse]" )
         REQUIRE("password" == info.password());
     }
 
-    SECTION("Parse user_name with delimiter and empty password")
+    SECTION( "Parse user_name with delimiter and empty password" )
     {
         const auto user_name_with_empty_password = "user_name:";
         auto info = user_info::parse(user_name_with_empty_password);
@@ -43,12 +43,47 @@ TEST_CASE( "Parse user_name & password", "[user_info::parse]" )
         REQUIRE(!info.password_set());
     }
 
-    SECTION("Parse password only")
+    SECTION( "Parse password only" )
     {
         const auto password_only = ":password";
         auto info = user_info::parse(password_only);
 
         REQUIRE(info.user_name().empty());
         REQUIRE("password" == info.password());
+    }
+}
+
+
+TEST_CASE( "Format to string", "[user_info::to_string]" )
+{
+    SECTION( "Format user_name only" )
+    {
+        const string user_name = "user_name_only";
+        const auto info = user_info(user_name);
+
+        auto result = info.to_string();
+
+        REQUIRE(user_name == result);
+    }
+
+    SECTION("Format password only")
+    {
+        const string password = "password";
+        const auto info = user_info("", password);
+
+        auto result = info.to_string();
+
+        REQUIRE((":" + password) == result);
+    }
+
+    SECTION("Format user_name with password")
+    {
+        const string user_name = "user_name";
+        const string password = "password";
+        const auto info = user_info(user_name, password);
+
+        auto result = info.to_string();
+
+        REQUIRE((user_name + ":" + password) == result);
     }
 }

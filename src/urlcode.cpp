@@ -1,4 +1,4 @@
-﻿// urltools.cpp : Defines the entry point for the application.
+﻿// urlcode.cpp : Defines the entry point for the application.
 //
 
 #include <cstring>
@@ -8,21 +8,21 @@
 using std::string;
 
 inline bool
-encode_required(char c) {
-    if (-1 > c || 255 < c)
+encode_required(const char c) {
+    if (-1 > c)
         return true;
 
     return ! (isalnum(c) || c == '-' || c == '_' || c == '.');
 }
 
 char
-to_hex(char code) {
+to_hex(const char code) {
     static char alphabet[] = "0123456789abcdef";
     return alphabet[code & 0x0F];
 }
 
 char
-from_hex(char h) {
+from_hex(const char h) {
     if (isdigit(h)) {
         return h - '0';
     }
