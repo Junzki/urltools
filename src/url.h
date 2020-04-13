@@ -1,5 +1,4 @@
-//
-// Created by Andrija Juriša on 2020/4/9.
+// url.h -- Defines the url_t type.
 //
 
 #ifndef STUN_URL_H_
