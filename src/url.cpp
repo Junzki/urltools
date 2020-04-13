@@ -5,8 +5,10 @@
 #include <cstdlib>
 #include <cstring>
 
+using stun::url_t;
 
 const char scheme_separator = ':';
+const char frag_separator = '#';
 
 string
 stun::get_scheme(char** origin)
@@ -50,3 +52,44 @@ stun::get_scheme(char** origin)
     (*origin) += i;  // move pointer.
     return scheme;
 }
+
+string
+stun::get_frag(char** i)
+{
+    const auto pfrag = strchr(*i, frag_separator);
+    if (nullptr == pfrag) return "";
+
+    const auto size = strlen(pfrag + 1);
+
+    const auto frag = new char[size + 1];
+    memset(frag, '\0', size + 1);
+
+    strcpy(frag, pfrag + 1);
+    memset(pfrag, '\0', size);  // erase #frag part.
+
+    auto ret = string(frag);
+    delete[](frag);  // Free allocated memory explicitly.
+
+    return ret;
+}
+
+
+url_t url_t::parse(const char* i)
+{
+    const auto size = strlen(i);
+    if (0 == size) throw("empty url");
+
+    auto rawurl = new char[size + 1];
+    memset(rawurl, '\0', size + 1);
+
+    // Copy explicitly.
+    strcpy(rawurl, i);
+
+    url_t url;
+    url.fragment = get_frag(&rawurl);
+
+
+    delete[](rawurl);
+    return url;
+}
+

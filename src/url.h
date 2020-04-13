@@ -37,11 +37,23 @@ namespace stun {
         string password_;
     };
 
+    // A URL represents a parsed URL (technically, a URI reference).
+    //
+    // The general form represented is:
+    //
+    //	[scheme:][//[userinfo@]host][/]path[?query][#fragment]
+    //
+    // URLs that do not start with a slash after the scheme are interpreted as:
+    //
+    //	scheme:opaque[?query][#fragment]
+    //
     class url_t {
     public:
         url_t() = default;
 
-        url_t parse(const string& i);
+        static url_t parse(const char*);
+        static url_t parse(const string& i) { return parse(i.c_str()); };
+        
         string to_string() const;
 
         string scheme;
@@ -56,6 +68,7 @@ namespace stun {
     };
 
     string get_scheme(char**);
+    string get_frag(char**);
 }
 
 
