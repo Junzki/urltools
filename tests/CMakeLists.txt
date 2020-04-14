@@ -13,7 +13,7 @@ target_link_libraries(urlcode_test ${TEST_LIBRARIES})
 add_executable(user_info_test "user_info.cpp")
 target_link_libraries(user_info_test ${TEST_LIBRARIES})
 
-add_executable(url_test "url.cpp")
+add_executable(url_test "url_test.h" "url.cpp")
 target_link_libraries(url_test ${TEST_LIBRARIES})
 
 

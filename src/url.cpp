@@ -9,9 +9,10 @@ using stun::url_t;
 
 const char scheme_separator = ':';
 const char frag_separator = '#';
+const char query_separator = '?';
 
 string
-stun::get_scheme(char** origin)
+get_scheme(char** origin)
 {
     const size_t size = strlen(*origin);
     size_t i = 0;
@@ -53,22 +54,32 @@ stun::get_scheme(char** origin)
     return scheme;
 }
 
-string
-stun::get_frag(char** i)
+
+char*
+extract_tail(char** i, const char sep)
 {
-    const auto pfrag = strchr(*i, frag_separator);
-    if (nullptr == pfrag) return "";
+    const auto pch = strchr(*i, sep);
+    if (nullptr == pch) return pch;
 
-    const auto size = strlen(pfrag + 1);
+    const auto size = strlen(pch + 1);
 
-    const auto frag = new char[size + 1];
-    memset(frag, '\0', size + 1);
+    const auto target = new char[size + 1];
+    memset(target, '\0', size + 1);
 
-    strcpy(frag, pfrag + 1);
-    memset(pfrag, '\0', size);  // erase #frag part.
+    strcpy(target, pch + 1);
+    memset(pch, '\0', size);  // erase #frag part.
 
-    auto ret = string(frag);
-    delete[](frag);  // Free allocated memory explicitly.
+    return target;
+}
+
+string
+get_frag(char** i)
+{
+    const auto separated = extract_tail(i, frag_separator);
+    if (nullptr == separated) return "";
+
+    auto ret = string(separated);
+    delete[](separated);
 
     return ret;
 }
@@ -87,6 +98,7 @@ url_t url_t::parse(const char* i)
 
     url_t url;
     url.fragment = get_frag(&rawurl);
+    url.raw_query = extract_tail(&rawurl, query_separator);
 
 
     delete[](rawurl);

@@ -63,12 +63,11 @@ namespace stun {
         string host;
         string path;
         string raw_path;
-        string raw_query;
+        char*  raw_query = nullptr;
         string fragment;
     };
 
-    string get_scheme(char**);
-    string get_frag(char**);
+
 }
 
 
