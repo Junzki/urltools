@@ -105,3 +105,9 @@ url_t url_t::parse(const char* i)
     return url;
 }
 
+
+string
+url_t::to_string() const
+{
+    return this->raw_path;
+}
