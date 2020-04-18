@@ -39,7 +39,7 @@ get_scheme(char** origin)
     }
 
     const auto target_size = i + 1;
-    const auto ret = static_cast<char*>(malloc(target_size));
+    auto* const ret = static_cast<char*>(malloc(target_size));
     if (nullptr == ret)
         throw("cannot allocate memory");
 
