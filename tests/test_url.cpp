@@ -3,8 +3,7 @@
 
 #include <string>
 #include <cstring>
-#include "url.h"
-#include "url_test.h"
+#include "test_url.h"
 
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
@@ -46,13 +45,13 @@ TEST_CASE("Parse ?query", "[stun::extract_tail]")
     SECTION("Parse query")
     {
         const string with_query = "x?y=z";
-        auto input_array = const_cast<char*>(with_query.c_str());
+        auto* input_array = const_cast<char*>(with_query.c_str());
 
-        const auto expect_query = "y=z";
-        const auto expect_rest = "x";
+        const auto* const expect_query = "y=z";
+        const auto* const expect_rest = "x";
 
-        const auto exact = get_frag(&input_array);
-        REQUIRE(expect_query == exact);
+        const auto* const exact = extract_tail(&input_array, '?');
+        REQUIRE(0 == strcmp(expect_query, exact));
         REQUIRE(0 == strcmp(expect_rest, input_array));
     }
 }

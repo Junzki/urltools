@@ -49,6 +49,10 @@ namespace stun {
     //
     class url_t {
     public:
+        const static char scheme_separator = ':';
+        const static char frag_separator = '#';
+        const static char query_separator = '?';
+
         url_t() = default;
 
         static url_t parse(const char*);

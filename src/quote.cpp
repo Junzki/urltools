@@ -1,9 +1,9 @@
-﻿// urlcode.cpp : Defines the entry point for the application.
+﻿// quote.cpp : Defines the entry point for the application.
 //
 
 #include <cstring>
 #include <cstdlib>
-#include "urlcode.h"
+#include "quote.h"
 
 using std::string;
 
@@ -32,7 +32,7 @@ from_hex(const char h) {
 
 
 string
-stun::urlencode(const string& in) {
+stun::quote_url(const string& in) {
     const char* body = in.c_str();
     size_t size = strlen(body);
     if (0 == size)
@@ -65,7 +65,7 @@ stun::urlencode(const string& in) {
 
 
 string
-stun::urldecode(const string& in) {
+stun::unquote_url(const string& in) {
     const char* body = in.c_str();
     size_t size = strlen(body);
 

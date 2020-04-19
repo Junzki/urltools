@@ -7,9 +7,6 @@
 
 using stun::url_t;
 
-const char scheme_separator = ':';
-const char frag_separator = '#';
-const char query_separator = '?';
 
 string
 get_scheme(char** origin)
@@ -23,7 +20,7 @@ get_scheme(char** origin)
         const auto c = (*origin)[i];
         if (isalpha(c)) continue;  // do noting
 
-        else if (scheme_separator == c)
+        else if (url_t::scheme_separator == c)
         {
             if (0 == i) return "";  // no protocol (scheme) specified.
 
@@ -75,7 +72,7 @@ extract_tail(char** i, const char sep)
 string
 get_frag(char** i)
 {
-    auto* const separated = extract_tail(i, frag_separator);
+    auto* const separated = extract_tail(i, url_t::frag_separator);
     if (nullptr == separated) return "";
 
     auto ret = string(separated);
