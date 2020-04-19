@@ -58,12 +58,12 @@ get_scheme(char** origin)
 char*
 extract_tail(char** i, const char sep)
 {
-    const auto pch = strchr(*i, sep);
+    auto* const pch = strchr(*i, sep);
     if (nullptr == pch) return pch;
 
     const auto size = strlen(pch + 1);
 
-    const auto target = new char[size + 1];
+    auto* const target = new char[size + 1];
     memset(target, '\0', size + 1);
 
     strcpy(target, pch + 1);
@@ -75,7 +75,7 @@ extract_tail(char** i, const char sep)
 string
 get_frag(char** i)
 {
-    const auto separated = extract_tail(i, frag_separator);
+    auto* const separated = extract_tail(i, frag_separator);
     if (nullptr == separated) return "";
 
     auto ret = string(separated);
@@ -90,7 +90,7 @@ url_t url_t::parse(const char* i)
     const auto size = strlen(i);
     if (0 == size) throw("empty url");
 
-    auto rawurl = new char[size + 1];
+    auto* rawurl = new char[size + 1];
     memset(rawurl, '\0', size + 1);
 
     // Copy explicitly.
