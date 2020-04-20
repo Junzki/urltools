@@ -1,11 +1,12 @@
 // url.cpp -- Implements class url_t.
 //
 
-#include "url.h"
 #include <cstdlib>
 #include <cstring>
+#include "url.h"
 
 using stun::url_t;
+using stun::authority_t;
 
 
 string
@@ -47,7 +48,10 @@ get_scheme(char** origin)
 
     free(ret);
 
-    (*origin) += i;  // move pointer.
+    *origin += i;  // move pointer.
+    if (3 <= strlen(*origin))
+        *origin += 3;   // Remove leading "://"
+
     return scheme;
 }
 
@@ -69,6 +73,8 @@ extract_tail(char** i, const char sep)
     return target;
 }
 
+
+
 string
 get_frag(char** i)
 {
@@ -79,6 +85,32 @@ get_frag(char** i)
     delete[](separated);
 
     return ret;
+}
+
+authority_t*
+get_authority(char** i)
+{
+    auto* pch = strchr(*i, '@');
+    if (nullptr == pch) return nullptr;
+
+    const auto size = pch - *i;
+    auto* separated = new char[size + 1];
+    if (nullptr == separated)
+        throw("cannot allocate memory");
+
+    memset(separated, '\0', size + 1);
+    memcpy(separated, *i, size);
+
+    auto* info = new authority_t();
+    if (nullptr == info)
+        throw("cannot allocate memory");
+
+    info->parse(separated);
+    delete[](separated);
+
+    *i = pch + 1;
+
+    return info;
 }
 
 
@@ -96,6 +128,7 @@ url_t url_t::parse(const char* i)
     url_t url;
     url.fragment = get_frag(&rawurl);
     url.raw_query = extract_tail(&rawurl, query_separator);
+    url.user = get_authority(&rawurl);
 
 
     delete[](rawurl);

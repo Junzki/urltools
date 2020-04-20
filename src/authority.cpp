@@ -1,34 +1,63 @@
-// user_info.cpp -- Implements user_info class.
-// user_info -> user_name[:password]
+// authority_t.cpp -- Implements authority_t class.
+// authority_t -> user_name[:password]
 //
 
 #include <sstream>
 #include "url.h"
 #include "quote.h"
 
-using stun::user_info;
+using stun::authority_t;
 
 
-user_info
-user_info::parse(const string& in) {
-    if (0 == in.length())
-        return user_info();
+//authority_t
+//authority_t::parse(const string& in)
+//{
+//    if (0 == in.length())
+//        return authority_t();
+//
+//    const auto found = in.find(':');
+//
+//    // No `password` specified.
+//    if (found == string::npos)
+//        return authority_t(unquote_url(in));
+//
+//    const auto name = unquote_url(in.substr(0, found));
+//    const auto password = unquote_url(in.substr(found + 1));
+//
+//    return authority_t(name, password);
+//}
+
+
+void
+authority_t::parse(const string& in)
+{
+    if (0 == in.length()) return;
 
     const auto found = in.find(':');
-
     // No `password` specified.
     if (found == string::npos)
-        return user_info(unquote_url(in));
+    {
+        this->user_name_ = unquote_url(in);
+        return;
+    }
 
-    const auto name = unquote_url(in.substr(0, found));
-    const auto password = unquote_url(in.substr(found + 1));
+    this->user_name_ = unquote_url(in.substr(0, found));
+    this->password_ = unquote_url(in.substr(found + 1));
+}
 
-    return user_info(name, password);
+void
+authority_t::parse(const char* in)
+{
+    if (nullptr == in) return;
+
+    this->parse(string(in));
 }
 
 
+
+
 string
-user_info::to_string() const
+authority_t::to_string() const
 {
     std::stringstream ss;
     const auto user = quote_url(this->user_name_);

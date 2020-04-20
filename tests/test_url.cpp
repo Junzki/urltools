@@ -14,13 +14,15 @@ TEST_CASE( "Parse scheme", "[stun::get_scheme]" )
     SECTION( "Parse scheme" )
     {
         const string url = "https://github.com";
-        auto input_array = const_cast<char*>(url.c_str());
+        auto* input_array = const_cast<char*>(url.c_str());
 
-        const auto expect = "https";
+        const string expect = "https";
+        const auto* expect_rest = "github.com";
 
         const auto exact = get_scheme(&input_array);
 
         REQUIRE(expect == exact);
+        REQUIRE(0 == strcmp(expect_rest, input_array));
     }
 }
 
@@ -40,9 +42,9 @@ TEST_CASE( "Parse #frag", "[stun::get_frag]" )
     }
 }
 
-TEST_CASE("Parse ?query", "[stun::extract_tail]")
+TEST_CASE( "Parse ?query", "[stun::extract_tail]" )
 {
-    SECTION("Parse query")
+    SECTION( "Parse query" )
     {
         const string with_query = "x?y=z";
         auto* input_array = const_cast<char*>(with_query.c_str());
@@ -53,5 +55,24 @@ TEST_CASE("Parse ?query", "[stun::extract_tail]")
         const auto* const exact = extract_tail(&input_array, '?');
         REQUIRE(0 == strcmp(expect_query, exact));
         REQUIRE(0 == strcmp(expect_rest, input_array));
+    }
+}
+
+
+TEST_CASE( "Parse authority", "[stun::get_authority]" )
+{
+    SECTION( "Parse authority" )
+    {
+        const string with_authority = "user@hostname";
+        auto* input_array = const_cast<char*>(with_authority.c_str());
+
+        const string user_name = "user";
+        const auto* const host_name = "hostname";
+        const auto* const authority = get_authority(&input_array);
+
+        REQUIRE(nullptr != authority);
+        REQUIRE(user_name == authority->user_name());
+
+        REQUIRE(0 == strcmp(host_name, input_array));
     }
 }

@@ -11,20 +11,17 @@ using std::string;
 
 namespace stun {
 
-    template<typename T>
-    T parse(const string& in)
-    {
-        return T::parse(in);
-    };
-
-    class user_info {
+    class authority_t {
     public:
-        user_info(string user, string password = "")
+        explicit authority_t(string user, string password = "")
                 : user_name_(std::move(user)), password_(std::move(password)) {}
 
-        user_info() = default;
+        authority_t() = default;
 
-        static user_info parse(const string&);
+        //static authority_t parse(const string&);
+
+        void parse(const string&);
+        void parse(const char*);
 
         inline string user_name() const { return this->user_name_; }
         inline string password() const { return this->password_; }
@@ -61,7 +58,7 @@ namespace stun {
         string to_string() const;
 
         string scheme;
-        user_info* user = nullptr;
+        authority_t* user = nullptr;
 
         string opaque;
         string host;
