@@ -53,3 +53,5 @@ out/
 cmake-build-debug/
 cmake-build-release/
 [Bb]uild/
+
+*~
