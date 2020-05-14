@@ -76,3 +76,19 @@ TEST_CASE( "Parse authority", "[stun::get_authority]" )
         REQUIRE(0 == strcmp(host_name, input_array));
     }
 }
+
+
+TEST_CASE( "Parse hostname with port", "[stun::get_hostname]" )
+{
+    SECTION( "Parse hostname" )
+    {
+        const string with_hostname = "github.com:9099/junzki/urltools";
+        auto* input_array = const_cast<char*>(with_hostname.c_str());
+
+        const string expect = "github.com:9099";
+
+        const auto exact = get_hostname(&input_array);
+
+        REQUIRE(expect == exact);
+    }
+}

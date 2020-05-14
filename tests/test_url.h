@@ -19,5 +19,7 @@ string get_frag(char**);
 
 authority_t* get_authority(char**);
 
+string get_hostname(char**);
+
 
 #endif  // !STUN_URL_TEST_H_

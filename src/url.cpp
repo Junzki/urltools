@@ -87,6 +87,7 @@ get_frag(char** i)
     return ret;
 }
 
+
 authority_t*
 get_authority(char** i)
 {
@@ -111,6 +112,31 @@ get_authority(char** i)
     *i = pch + 1;
 
     return info;
+}
+
+
+string
+get_hostname(char** i)
+{
+    auto* pch = strchr(*i, '/');
+    if (nullptr == pch)
+        return string(*i);
+
+    if (*i == pch)
+        return "";
+
+    const auto size = pch - *i;
+
+    auto* separated = new char[size + 1];
+    if (nullptr == separated)
+        throw("cannot allocate memory");
+
+    memset(separated, '\0', size + 1);
+    memcpy(separated, *i, size);
+
+    *i = pch + 1;
+
+    return string(separated);
 }
 
 
